@@ -1,0 +1,49 @@
+auth:
+  enabled: true
+  rootPassword: "1234"
+  # -- existingSecret Existing secret with MongoDB(&reg;) credentials (keys: `mongodb-passwords`, `mongodb-root-password`, `mongodb-metrics-password`, ` mongodb-replica-set-key`)
+  existingSecret: ""
+architecture: standalone
+# replicaCount: 3
+persistence:
+  enabled: true
+volumePermissions:
+  enabled: true
+metrics:
+  enabled: false
+  prometheusRule:
+    enabled: false
+
+# bitnami/mongodb is not yet supported on ARM.
+# Using unofficial tools to build bitnami/mongodb (arm64 support)
+# more info: https://github.com/ZCube/bitnami-compat
+image:
+ #registry: ghcr.io/zcube
+ repository: arm64v8/mongo
+ tag: latest
+platform:
+  architecture: amd64 
+podSecurityContext:
+  fsGroup: 0
+containerSecurityContext:
+  runAsGroup: 0
+
+
+# Configuración para los recursos del arbiter (si estás usando replica sets)
+# arbiter:
+#   resources:
+#     requests:
+#       cpu: "250m"  # Establecer recursos mínimos
+#       memory: "512Mi"
+#     limits:
+#       cpu: "500m"  # Establecer recursos máximos
+#       memory: "1Gi"
+
+# # Configuración para los recursos del contenedor principal de MongoDB
+# resources:
+#   requests:
+#     cpu: "500m"   # Recursos mínimos que el contenedor necesita
+#     memory: "2Gi"
+#   limits:
+#     cpu: "1"      # Recursos máximos
+#     memory: "4Gi"
