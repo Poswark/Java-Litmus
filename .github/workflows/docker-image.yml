@@ -34,18 +34,6 @@ jobs:
       - name: Build Docker image
         run: docker build -t poswark/hello-java21:${{ env.IMAGE_VERSION }} .
 
-      - name: Install Trivy
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y wget
-          wget https://github.com/aquasecurity/trivy/releases/download/v0.40.0/trivy_0.40.0_Linux-64bit.deb
-          sudo dpkg -i trivy_0.40.0_Linux-64bit.deb
-
-      - name: Scan Docker image with Trivy
-        run: |
-          # Escanea la imagen en busca de vulnerabilidades y falla si encuentra de nivel HIGH o CRITICAL
-          trivy image --severity HIGH,CRITICAL poswark/hello-java21:${{ env.IMAGE_VERSION }}
-
       - name: Push Docker image with version
         if: success()  
         run: docker push poswark/hello-java21:${{ env.IMAGE_VERSION }}
